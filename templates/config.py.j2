@@ -1,0 +1,105 @@
+import os
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+
+{% if pdns_admin_global_config is defined %}
+{% for key, value in pdns_admin_global_config.items() %}
+{% if key | upper not in ["UPLOAD_DIR"] %}
+{% if value is not mapping %}
+{% if value is sequence and value is not string %}
+{% if value[0] is number %}
+{{ key | upper }} = [ {{ value|join(', ') }} ]
+{% else %}
+{{ key | upper }} = [ "{{ value|join('", "') }}" ]
+{% endif %}
+{% else %}
+{% if value == "true" or value == "false" or value is number %}
+{{ key | upper }} = {{ value }}
+{% else %}
+{{ key | upper }} = "{{ value }}"
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+# Upload
+UPLOAD_DIR = os.path.join(basedir, 'upload')
+{% endif %}
+
+
+{% if pdns_admin_database_config is defined %}
+{% for key, value in pdns_admin_database_config.items() %}
+{% if key | upper not in ["SQLALCHEMY_DATABASE_URI", "SQLALCHEMY_MIGRATE_REPO"] %}
+{% if value is not mapping %}
+{% if value is sequence and value is not string %}
+{% if value[0] is number %}
+{{ key | upper }} = [ {{ value|join(', ') }} ]
+{% else %}
+{{ key | upper }} = [ "{{ value|join('", "') }}" ]
+{% endif %}
+{% else %}
+{% if value == "true" or value == "false" or value is number %}
+{{ key | upper }} = {{ value }}
+{% else %}
+{{ key | upper }} = "{{ value }}"
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+#MySQL
+SQLALCHEMY_DATABASE_URI = 'mysql://'+SQLA_DB_USER+':'\
+    +SQLA_DB_PASSWORD+'@'+SQLA_DB_HOST+'/'+SQLA_DB_NAME
+#SQLite
+SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+{% endif %}
+
+
+{% if pdns_admin_external_auth_config is defined %}
+{% for auth in pdns_admin_external_auth_config.values() %}
+{% for key, value in auth.items() %}
+{% if value is not mapping %}
+{% if value is sequence and value is not string %}
+{% if value[0] is number %}
+{{ key | upper }} = [ {{ value|join(', ') }} ]
+{% else %}
+{{ key | upper }} = [ "{{ value|join('", "') }}" ]
+{% endif %}
+{% else %}
+{% if value == "true" or value == "false" or value is number %}
+{{ key | upper }} = {{ value }}
+{% else %}
+{{ key | upper }} = "{{ value }}"
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+
+{% if pdns_admin_main_config is defined %}
+{% for key, value in pdns_admin_main_config.items() %}
+{% if key | upper not in ["RECORDS_ALLOW_EDIT"] %}
+{% if value is not mapping %}
+{% if value is sequence and value is not string %}
+{% if value[0] is number %}
+{{ key | upper }} = [ {{ value|join(', ') }} ]
+{% else %}
+{{ key | upper }} = [ "{{ value|join('", "') }}" ]
+{% endif %}
+{% else %}
+{% if value == "true" or value == "false" or value is number %}
+{{ key | upper }} = {{ value }}
+{% else %}
+{{ key | upper }} = "{{ value }}"
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+# RECORDS ALLOWED TO EDIT
+RECORDS_ALLOW_EDIT = [ "{{ pdns_admin_main_config.records_allow_edit | join('", "') }}" ]

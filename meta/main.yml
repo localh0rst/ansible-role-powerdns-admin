@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  author: Mick Pollard
+  role_name: aussielunix.powerdns-admin
+  namespace: aussielunix
+  description: Install and configure PowerDNS Admin
+  license: MIT
+  company: Contojo
+  min_ansible_version: 3.5.1
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+
+  galaxy_tags:
+    - dns
+    - powerdns
+    - powerdns-admin
+
+dependencies: []
